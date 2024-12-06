@@ -1,12 +1,12 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils.ts'
 import { Link } from 'react-router-dom'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Button } from './custom/button'
+} from '@/components/ui/dropdown-menu.tsx'
+import { Button } from './custom/button.tsx'
 import { IconMenu } from '@tabler/icons-react'
 import { useTranslations } from 'use-intl'
 

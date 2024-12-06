@@ -1,19 +1,24 @@
 import React from 'react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import ReactDOM from 'react-dom/client'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router-dom'
-import { Toaster } from '@/components/ui/toaster'
-import { ThemeProvider } from '@/components/theme-provider'
-import { LanguageProvider } from '@/components/language-provider'
-import router from '@/router'
+import { ThemeProvider } from '@/components/theme-provider.tsx'
+import { LanguageProvider } from '@/components/language-provider.tsx'
+import router from '@/router.tsx'
 import '@/index.css'
+
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-      <LanguageProvider defaultLanguage='en' storageKey='vite-ui-language'>
-        <RouterProvider router={router} />
-        <Toaster />
-      </LanguageProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider storageKey='vite-ui-theme'>
+        <LanguageProvider defaultLanguage='fr' storageKey='vite-ui-language'>
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </LanguageProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 )

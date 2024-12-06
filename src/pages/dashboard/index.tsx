@@ -1,36 +1,49 @@
-import { Layout } from '@/components/custom/layout'
-import { Button } from '@/components/custom/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Search } from '@/components/search'
+import { Layout } from '@/components/custom/layout.tsx'
+import { Button } from '@/components/custom/button.tsx'
+import { useQuery } from '@tanstack/react-query'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import ThemeSwitch from '@/components/theme-switch'
-import { TopNav } from '@/components/top-nav'
-import { UserNav } from '@/components/user-nav'
-import { RecentSales } from './components/recent-sales'
-import { Overview } from './components/overview'
+
 import { useTranslations } from 'use-intl'
-import LanguageSwitch from '@/components/language-switch'
+import { FullOverview } from './components/full-overview.tsx'
+import { StatisticsResponse } from './responses/statistics.ts'
+import ScatterPlot from './components/scatter-plot.tsx'
+import DateComparisonCard from './components/compare-two-dates.tsx'
+import StatisticCard from './components/StatisticCard.tsx'
+
+const CurrentIcon = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    strokeWidth='2'
+    className='h-4 w-4 text-muted-foreground'
+  >
+    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
+  </svg>
+)
+
+async function getStatistics() {
+  const apiUrl = import.meta.env.VITE_BACKEND_URL
+  const res = await fetch(apiUrl + '/DHT/api/statistics?format=json')
+  const data: StatisticsResponse | null = await res.json()
+  return data
+}
 
 export default function Dashboard() {
+  const { data, isFetching } = useQuery({
+    queryKey: ['summaryStatistics'],
+    queryFn: getStatistics,
+    staleTime: 30 * 1000,
+  })
   const t = useTranslations('dashboard')
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
-      <Layout.Header>
-        <TopNav links={topNav} />
-        <div className='ml-auto flex items-center space-x-4'>
-          <Search />
-          <ThemeSwitch />
-          <LanguageSwitch />
-          <UserNav />
-        </div>
-      </Layout.Header>
+      <Layout.Header></Layout.Header>
 
       {/* ===== Main ===== */}
       <Layout.Body>
@@ -39,7 +52,29 @@ export default function Dashboard() {
             {t('dashboard')}
           </h1>
           <div className='flex items-center space-x-2'>
-            <Button>{t('download')}</Button>
+            <Button
+              variant={'ghost'}
+              className='flex items-center gap-x-2 font-semibold'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                className='lucide lucide-map-pin-house'
+              >
+                <path d='M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z' />
+                <path d='M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2' />
+                <path d='M18 22v-3' />
+                <circle cx='10' cy='10' r='3' />
+              </svg>
+              Oujda
+            </Button>
           </div>
         </div>
         <Tabs
@@ -47,142 +82,100 @@ export default function Dashboard() {
           defaultValue='overview'
           className='space-y-4'
         >
-          <div className='w-full overflow-x-auto pb-2'>
-            <TabsList>
-              <TabsTrigger value='overview'>{t('overview')}</TabsTrigger>
-              <TabsTrigger value='analytics'>{t('analytics')}</TabsTrigger>
-              <TabsTrigger value='reports'>{t('reports')}</TabsTrigger>
-              <TabsTrigger value='notifications'>
-                {t('notifications')}
-              </TabsTrigger>
-            </TabsList>
-          </div>
           <TabsContent value='overview' className='space-y-4'>
-            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    {t('total_revenue')}
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='h-4 w-4 text-muted-foreground'
-                  >
-                    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>$45,231.89</div>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('from_last_month', { amount: '+20.1%' })}
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    {t('subscriptions')}
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='h-4 w-4 text-muted-foreground'
-                  >
-                    <path d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2' />
-                    <circle cx='9' cy='7' r='4' />
-                    <path d='M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>+2350</div>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('from_last_month', { amount: '+180.1%' })}
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    {t('sales')}
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='h-4 w-4 text-muted-foreground'
-                  >
-                    <rect width='20' height='14' x='2' y='5' rx='2' />
-                    <path d='M2 10h20' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>+12,234</div>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('from_last_month', { amount: '+19%' })}
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    {t('active_now')}
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='h-4 w-4 text-muted-foreground'
-                  >
-                    <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>+573</div>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('since_last_hour', { amount: '+201' })}
-                  </p>
-                </CardContent>
-              </Card>
+            <Tabs
+              orientation='vertical'
+              defaultValue='temp'
+              className='space-y-2'
+            >
+              <div className='flex w-full items-center justify-center'>
+                <TabsList className=''>
+                  <TabsTrigger value='temp'>Temperature</TabsTrigger>
+                  <TabsTrigger value='hum'>Humidity</TabsTrigger>
+                </TabsList>
+              </div>
+              <TabsContent value='temp' className='space-y-4'>
+                <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+                  <StatisticCard
+                    title='Maintenant'
+                    icon={CurrentIcon}
+                    value={data?.data?.curr?.record?.temp?.toFixed(2) + '°C'}
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Today Average temperature'
+                    icon={CurrentIcon}
+                    value={data?.data.avg.daily.record.temp.toFixed(2) + '°C'}
+                    trend={data?.data?.avg?.daily?.humTemp}
+                    trendSuffix="% d'hier"
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Weekly Average temperature'
+                    icon={CurrentIcon}
+                    value={data?.data.avg.weekly.record.temp.toFixed(2) + '°C'}
+                    trend={data?.data.avg.weekly.humTemp}
+                    trendSuffix='% de la semaine dernier'
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Max/Min temperature'
+                    icon={CurrentIcon}
+                    value={
+                      data?.data?.extremes?.highest?.temp +
+                      '°C/' +
+                      data?.data?.extremes?.lowest?.temp +
+                      '°C'
+                    }
+                    isLoading={isFetching}
+                  />
+                </div>
+              </TabsContent>
+              <TabsContent value='hum' className='space-y-4'>
+                <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+                  <StatisticCard
+                    title='Maintenant'
+                    icon={CurrentIcon}
+                    value={data?.data.curr.record.hum + '%'}
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Today Average Humidity'
+                    icon={CurrentIcon}
+                    value={data?.data.avg.daily.record.hum + '%'}
+                    trend={data?.data.avg.daily.humGrow}
+                    trendSuffix='% du jour dernier'
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Weekly Average Humidity'
+                    icon={CurrentIcon}
+                    value={data?.data.avg.weekly.record.hum + '%'}
+                    trend={data?.data.avg.weekly.humGrow}
+                    trendSuffix='% de la semaine dernier'
+                    isLoading={isFetching}
+                  />
+                  <StatisticCard
+                    title='Max/Min Humidity'
+                    icon={CurrentIcon}
+                    value={
+                      data?.data?.extremes?.highest?.hum +
+                      '%/' +
+                      data?.data?.extremes?.lowest?.hum +
+                      '%'
+                    }
+                    isLoading={isFetching}
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
+            <div className='grid grid-cols-1 '>
+              <FullOverview />
             </div>
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
-              <Card className='col-span-1 lg:col-span-4'>
-                <CardHeader>
-                  <CardTitle>{t('overview')}</CardTitle>
-                </CardHeader>
-                <CardContent className='pl-2'>
-                  <Overview />
-                </CardContent>
-              </Card>
-              <Card className='col-span-1 lg:col-span-3'>
-                <CardHeader>
-                  <CardTitle>{t('recent_sales')}</CardTitle>
-                  <CardDescription>
-                    {t('recent_sales_desc', { amount: '265' })}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RecentSales />
-                </CardContent>
-              </Card>
+              <ScatterPlot />
+
+              <DateComparisonCard />
             </div>
           </TabsContent>
         </Tabs>
@@ -190,26 +183,3 @@ export default function Dashboard() {
     </Layout>
   )
 }
-
-const topNav = [
-  {
-    title: 'dashboard.overview',
-    href: 'dashboard/overview',
-    isActive: true,
-  },
-  {
-    title: 'dashboard.customers',
-    href: 'dashboard/customers',
-    isActive: false,
-  },
-  {
-    title: 'dashboard.products',
-    href: 'dashboard/products',
-    isActive: false,
-  },
-  {
-    title: 'dashboard.settings',
-    href: 'dashboard/settings',
-    isActive: false,
-  },
-]

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
-import { Layout } from './custom/layout'
-import { Button } from './custom/button'
-import Nav from './nav'
-import { cn } from '@/lib/utils'
-import { sidelinks } from '@/data/sidelinks'
+import { Layout } from './custom/layout.tsx'
+import { Button } from './custom/button.tsx'
+import Nav from './nav.tsx'
+import { cn } from '@/lib/utils.ts'
+import { sidelinks } from '@/data/sidelinks.tsx'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -80,8 +80,8 @@ export default function Sidebar({
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
-              <span className='font-medium'>Shadcn Admin</span>
-              <span className='text-xs'>Vite + ShadcnUI</span>
+              <span className='font-medium'>Oujda weather</span>
+              <span className='text-xs'>React + Django</span>
             </div>
           </div>
 

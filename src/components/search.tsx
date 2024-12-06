@@ -1,8 +1,9 @@
-import { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input.tsx'
 import { useTranslations } from 'use-intl'
 
 export function Search() {
   const t = useTranslations('dashboard')
+
   return (
     <div>
       <Input

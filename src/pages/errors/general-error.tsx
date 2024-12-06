@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { Button } from '@/components/custom/button'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/custom/button.tsx'
+import { cn } from '@/lib/utils.ts'
 import { useTranslations } from 'use-intl'
 
 interface GeneralErrorProps extends React.HTMLAttributes<HTMLDivElement> {

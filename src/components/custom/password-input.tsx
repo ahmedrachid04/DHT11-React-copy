@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { IconEye, IconEyeOff } from '@tabler/icons-react'
-import { Button } from './button'
-import { cn } from '@/lib/utils'
+import { Button } from './button.tsx'
+import { cn } from '@/lib/utils.ts'
 
 export interface PasswordInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {}
