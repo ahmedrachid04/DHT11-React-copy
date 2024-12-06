@@ -96,7 +96,7 @@ export function FullOverview() {
   const { data: chartData, isLoading } = useQuery({
     queryKey: ['latestNRecords', timeRange],
     queryFn: getLatestNRecords,
-    enabled: !!!date,
+    enabled: !date,
     staleTime: 1000 * 60 * 60,
   })
   const { data: chartRangeData, isLoading: isRangeLoading } = useQuery({
