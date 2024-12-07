@@ -7,8 +7,11 @@ COPY . .
 RUN pnpm run build
 
 FROM nginx:1.25.4-alpine3.18
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /var/www/html/
-EXPOSE 8080
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY env.sh /docker-entrypoint.d/env.sh
+RUN chmod +x /docker-entrypoint.d/env.sh
+
+EXPOSE 80
 ENTRYPOINT ["nginx","-g","daemon off;"]

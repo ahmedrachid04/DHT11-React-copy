@@ -1,0 +1,46 @@
+services:
+  reverse-proxy:
+    image: "traefik:v3.2.1"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=araristaf@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.address=:80"
+    container_name: "traefik"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  frontend:
+    image: frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`dht.safouan.me`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+    environment:
+      - PREFIX_BACKEND_URL=https://dht-backend.safouan.me
+    depends_on:
+      - backend
+
+  backend:
+    image: dht
+    environment:
+      - ALLOWED_ORIGINS=https://dht.safouan.me
+      - CSRF_TRUSTED_ORIGINS=https://dht-backend.safouan.me
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`dht-backend.safouan.me`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+
+volumes:
+  letsencrypt:
