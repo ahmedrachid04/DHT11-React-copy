@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY . .
+RUN npm install -g pnpm
 RUN pnpm run build
 
 FROM busybox:1.30 AS runner
