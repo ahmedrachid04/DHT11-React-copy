@@ -1,12 +1,17 @@
 FROM node:21-alpine3.20 AS builder
 WORKDIR /app
+RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY . .
-RUN npm install -g pnpm
 RUN pnpm run build
 
-FROM busybox:1.30 AS runner
-WORKDIR /app
-COPY --from=builder /app/dist .
-CMD ["busybox", "httpd", "-f", "-v", "-p", "8080"]
+FROM nginx:1.25.4-alpine3.18
+COPY --from=builder /app/dist /var/www/html/
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY env.sh /docker-entrypoint.d/env.sh
+RUN chmod +x /docker-entrypoint.d/env.sh
+
+EXPOSE 80
+ENTRYPOINT ["nginx","-g","daemon off;"]
