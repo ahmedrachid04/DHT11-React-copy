@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
+import { cn, getDateDiffResult } from '@/lib/utils'
 
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -19,37 +19,6 @@ import {
 } from '@/components/ui/popover'
 import { Button } from '@/components/custom/button'
 import { useQuery } from '@tanstack/react-query'
-import { formatDateToYYYYMMDD } from './full-overview'
-
-export async function getDateDiffResult({
-  queryKey,
-}: {
-  queryKey: [string, Date | undefined, Date | undefined]
-}) {
-  const startDate = queryKey[queryKey.length - 2] as Date | undefined
-  const endDate = queryKey[queryKey.length - 1] as Date | undefined
-  const apiUrl = import.meta.env.VITE_BACKEND_URL
-  if (!startDate || !endDate) {
-    throw Error('no startDate or endDate')
-  }
-  const res = await fetch(
-    apiUrl +
-      `/DHT/api/diff?from=${formatDateToYYYYMMDD(startDate)}&to=${formatDateToYYYYMMDD(endDate)}`
-  )
-  const data: {
-    data: {
-      from_date: string
-      to_date: string
-      temp_diff: number
-      hum_diff: number
-    } | null
-    error: string | null
-  } | null = await res.json()
-  if (data?.error) {
-    throw new Error(data.error)
-  }
-  return data
-}
 
 export default function DateComparisonCard() {
   const [startDate, setStartDate] = useState<Date>()
@@ -140,7 +109,7 @@ export default function DateComparisonCard() {
           <div
             className={cn(
               'rounded-lg p-4 transition-all duration-300 ease-in-out',
-              data?.data
+              data
                 ? 'bg-primary/10 dark:bg-primary/20'
                 : 'bg-gray-100 dark:bg-gray-800'
             )}
@@ -152,15 +121,14 @@ export default function DateComparisonCard() {
               )}
             </div>
 
-            {data?.data ? (
+            {data ? (
               <p className='text-sm'>
                 The temperature has increased by{' '}
-                <span className='font-bold'>{data?.data?.temp_diff}</span>°C,
-                making it {data?.data?.temp_diff > 0 ? 'warmer' : 'cooler'} than
-                before. The humidity has{' '}
-                {data?.data?.hum_diff > 0 ? 'increased' : 'decreased'} by{' '}
-                <span className='font-bold'>{data?.data?.hum_diff}</span>%
-                between the 1st and 2nd date.
+                <span className='font-bold'>{data?.temp_diff}</span>°C, making
+                it {data?.temp_diff > 0 ? 'warmer' : 'cooler'} than before. The
+                humidity has {data?.hum_diff > 0 ? 'increased' : 'decreased'} by{' '}
+                <span className='font-bold'>{data?.hum_diff}</span>% between the
+                1st and 2nd date.
               </p>
             ) : (
               <p className='text-sm text-muted-foreground'>

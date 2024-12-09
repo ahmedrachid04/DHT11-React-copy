@@ -29,7 +29,7 @@ type CurrRecord = {
   record: RecordData
 }
 
-type SummaryStatistics = {
+export type SummaryStatistics = {
   curr: CurrRecord
   avg: {
     daily: AvgRecord

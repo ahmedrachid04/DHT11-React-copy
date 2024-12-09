@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.tsx'
-import { RecordData } from '../responses/statistics'
 import { Button } from '@/components/custom/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -35,45 +34,9 @@ import {
 import { CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
 import { useFormatter } from 'use-intl'
-import { cn } from '@/lib/utils'
+import { cn, getRangeRecords } from '@/lib/utils'
+import { getLatestNRecords } from './getLatestNRecords'
 
-export function formatDateToYYYYMMDD(date: Date) {
-  return date.toISOString().split('T')[0]
-}
-
-export async function getLatestNRecords({
-  queryKey,
-}: {
-  queryKey: [string, number]
-}) {
-  const timeRange = queryKey[queryKey.length - 1]
-  const apiUrl = import.meta.env.VITE_BACKEND_URL
-  const res = await fetch(
-    apiUrl + `/DHT/api/avg/days?format=json&n=${timeRange}`
-  )
-  const data: { data: RecordData[] | null } | null = await res.json()
-  data?.data && data?.data?.reverse()
-  console.log('data:', data)
-  return data
-}
-export async function getRangeRecords({
-  queryKey,
-}: {
-  queryKey: [string, DateRange | undefined]
-}) {
-  const timeRange = queryKey[queryKey.length - 1] as DateRange | undefined
-  const apiUrl = import.meta.env.VITE_BACKEND_URL
-  if (!timeRange?.from || !timeRange?.to) {
-    throw Error('no timerange')
-  }
-  const res = await fetch(
-    apiUrl +
-      `/DHT/api/avg/range?format=json&from=${formatDateToYYYYMMDD(timeRange.from)}&to=${formatDateToYYYYMMDD(timeRange.to)}`
-  )
-  const data: { data: RecordData[] | null } | null = await res.json()
-  data?.data && data?.data?.reverse()
-  return data
-}
 export type ChartItem = { dt: string; temp: number; hum: number }
 
 const chartConfig = {
@@ -186,9 +149,7 @@ export function FullOverview() {
           config={chartConfig}
           className=' aspect-auto h-[250px] w-full'
         >
-          <AreaChart
-            data={(date ? chartRangeData?.data : chartData?.data) ?? []}
-          >
+          <AreaChart data={(date ? chartRangeData : chartData) ?? []}>
             <defs>
               <linearGradient id='fillTemp' x1='0' y1='0' x2='0' y2='1'>
                 <stop

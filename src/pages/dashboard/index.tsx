@@ -6,10 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { useTranslations } from 'use-intl'
 import { FullOverview } from './components/full-overview.tsx'
-import { StatisticsResponse } from './responses/statistics.ts'
+import { SummaryStatistics } from './responses/statistics.ts'
 import ScatterPlot from './components/scatter-plot.tsx'
 import DateComparisonCard from './components/compare-two-dates.tsx'
 import StatisticCard from './components/StatisticCard.tsx'
+
+import { UserNav } from '@/components/user-nav.tsx'
+import { djangoRequest } from '@/lib/django-service.ts'
 
 const CurrentIcon = (
   <svg
@@ -27,9 +30,10 @@ const CurrentIcon = (
 )
 
 async function getStatistics() {
-  const apiUrl = import.meta.env.VITE_BACKEND_URL
-  const res = await fetch(apiUrl + '/DHT/api/statistics?format=json')
-  const data: StatisticsResponse | null = await res.json()
+  const { data } = await djangoRequest<SummaryStatistics>({
+    endpoint: '/api/dht/statistics',
+    method: 'GET',
+  })
   return data
 }
 
@@ -43,7 +47,11 @@ export default function Dashboard() {
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
-      <Layout.Header></Layout.Header>
+      <Layout.Header>
+        <div className='flex w-full items-center justify-end'>
+          <UserNav />
+        </div>
+      </Layout.Header>
 
       {/* ===== Main ===== */}
       <Layout.Body>
@@ -99,22 +107,22 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Maintenant'
                     icon={CurrentIcon}
-                    value={data?.data?.curr?.record?.temp?.toFixed(2) + '°C'}
+                    value={data?.curr?.record?.temp + '°C'}
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Today Average temperature'
                     icon={CurrentIcon}
-                    value={data?.data.avg.daily.record.temp.toFixed(2) + '°C'}
-                    trend={data?.data?.avg?.daily?.humTemp}
+                    value={data?.avg?.daily.record.temp + '°C'}
+                    trend={data?.avg?.daily?.humTemp}
                     trendSuffix="% d'hier"
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Weekly Average temperature'
                     icon={CurrentIcon}
-                    value={data?.data.avg.weekly.record.temp.toFixed(2) + '°C'}
-                    trend={data?.data.avg.weekly.humTemp}
+                    value={data?.avg.weekly.record.temp + '°C'}
+                    trend={data?.avg.weekly.humTemp}
                     trendSuffix='% de la semaine dernier'
                     isLoading={isFetching}
                   />
@@ -122,9 +130,9 @@ export default function Dashboard() {
                     title='Max/Min temperature'
                     icon={CurrentIcon}
                     value={
-                      data?.data?.extremes?.highest?.temp +
+                      data?.extremes?.highest?.temp +
                       '°C/' +
-                      data?.data?.extremes?.lowest?.temp +
+                      data?.extremes?.lowest?.temp +
                       '°C'
                     }
                     isLoading={isFetching}
@@ -136,22 +144,22 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Maintenant'
                     icon={CurrentIcon}
-                    value={data?.data.curr.record.hum + '%'}
+                    value={data?.curr.record.hum + '%'}
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Today Average Humidity'
                     icon={CurrentIcon}
-                    value={data?.data.avg.daily.record.hum + '%'}
-                    trend={data?.data.avg.daily.humGrow}
+                    value={data?.avg.daily.record.hum + '%'}
+                    trend={data?.avg.daily.humGrow}
                     trendSuffix='% du jour dernier'
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Weekly Average Humidity'
                     icon={CurrentIcon}
-                    value={data?.data.avg.weekly.record.hum + '%'}
-                    trend={data?.data.avg.weekly.humGrow}
+                    value={data?.avg.weekly.record.hum + '%'}
+                    trend={data?.avg.weekly.humGrow}
                     trendSuffix='% de la semaine dernier'
                     isLoading={isFetching}
                   />
@@ -159,9 +167,9 @@ export default function Dashboard() {
                     title='Max/Min Humidity'
                     icon={CurrentIcon}
                     value={
-                      data?.data?.extremes?.highest?.hum +
+                      data?.extremes?.highest?.hum +
                       '%/' +
-                      data?.data?.extremes?.lowest?.hum +
+                      data?.extremes?.lowest?.hum +
                       '%'
                     }
                     isLoading={isFetching}

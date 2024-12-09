@@ -18,6 +18,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import { Button } from '@/components/custom/button'
+import { getMonthsAverage } from '@/lib/utils'
 
 const chartConfig = {
   temp: {
@@ -29,16 +30,6 @@ const chartConfig = {
     color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig
-
-export async function getMonthsAverage() {
-  const apiUrl = import.meta.env.VITE_BACKEND_URL
-  const res = await fetch(apiUrl + '/DHT/api/avg/months?format=json&n=12')
-  const data: {
-    data: { dt: string; temp: number | null; hum: number | null }[] | null
-  } | null = await res.json()
-  console.log('data:', data)
-  return data
-}
 
 const monthNamesInFrench = [
   'Janvier',
@@ -62,7 +53,7 @@ export function ScatterPlot() {
     staleTime: 1000 * 60 * 60,
   })
 
-  const Date = data?.data?.map((i) => {
+  const Date = data?.map((i) => {
     return {
       temp: i.temp ?? 0,
       hum: i.hum ?? 0,
@@ -73,22 +64,19 @@ export function ScatterPlot() {
   if (isError) return <p>Failed to load data</p>
 
   // Calculate the trend (difference between the last and first month)
-  const tempChange = data?.data?.length
-    ? (data?.data?.[data?.data.length - 1]?.temp ?? 0) -
-      (data?.data?.[0]?.temp ?? 0)
+  const tempChange = data?.length
+    ? (data?.[data.length - 1]?.temp ?? 0) - (data?.[0]?.temp ?? 0)
     : 0
-  const humChange = data?.data?.length
-    ? (data?.data?.[data?.data.length - 1]?.hum ?? 0) -
-      (data?.data?.[0]?.hum ?? 0)
+  const humChange = data?.length
+    ? (data?.[data.length - 1]?.hum ?? 0) - (data?.[0]?.hum ?? 0)
     : 0
 
   // Create a dynamic period for the card footer
   const startMonth =
-    monthNamesInFrench[parseInt(data?.data?.[0]?.dt.split('-')[1] ?? '0') || 0]
+    monthNamesInFrench[parseInt(data?.[0]?.dt.split('-')[1] ?? '0') || 0]
   const endMonth =
     monthNamesInFrench[
-      parseInt(data?.data?.[data?.data.length - 1]?.dt.split('-')[1] ?? '0') ||
-        0
+      parseInt(data?.[data.length - 1]?.dt.split('-')[1] ?? '0') || 0
     ]
   const period = `${startMonth} - ${endMonth} 2024`
 

@@ -3,12 +3,17 @@ import { Layout } from '@/components/custom/layout.tsx'
 import { DataTable } from './components/data-table'
 import { columns } from './components/columns.tsx'
 import { tasks } from './data/tasks.ts'
+import { UserNav } from '@/components/user-nav.tsx'
 
 export default function Tasks() {
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
-      <Layout.Header sticky></Layout.Header>
+      <Layout.Header sticky>
+        <div className='flex w-full items-center justify-end'>
+          <UserNav />
+        </div>
+      </Layout.Header>
 
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
