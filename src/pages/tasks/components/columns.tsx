@@ -1,14 +1,14 @@
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
 
-import { labels, priorities, statuses } from '../data/data'
-import { Task } from '../data/schema'
+import { statuses } from '../data/data'
 
-export const columns: ColumnDef<Task>[] = [
+import { Incident } from '@/lib/types/incident'
+
+export const columns: ColumnDef<Incident & { closed_by: string | null }>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -36,7 +36,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Task' />
+      <DataTableColumnHeader column={column} title='Incident ID' />
     ),
     cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
     enableSorting: false,
@@ -48,11 +48,8 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title='Title' />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label)
-
       return (
         <div className='flex space-x-2'>
-          {label && <Badge variant='outline'>{label.label}</Badge>}
           <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
             {row.getValue('title')}
           </span>
@@ -61,13 +58,34 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'reported_at',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Created' />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className=''>
+          <span className='max-w-32 truncate text-start font-medium sm:max-w-72 md:max-w-[31rem]'>
+            {new Date(row.getValue('reported_at')).toLocaleDateString('fr-FR', {
+              month: '2-digit',
+              year: '2-digit',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'resolved',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue('status')
+        (status) => status.value === row.getValue('resolved')
       )
 
       if (!status) {
@@ -88,30 +106,42 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: 'priority',
+    accessorKey: 'temperature',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Priority' />
+      <DataTableColumnHeader column={column} title='Current Temp' />
     ),
     cell: ({ row }) => {
-      const priority = priorities.find(
-        (priority) => priority.value === row.getValue('priority')
-      )
-
-      if (!priority) {
-        return null
-      }
-
       return (
         <div className='flex items-center'>
-          {priority.icon && (
-            <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-          )}
-          <span>{priority.label}</span>
+          <span className=''>{row.getValue('temperature')}C°</span>
         </div>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+  },
+  {
+    accessorKey: 'humidity',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Current Hum' />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className='flex items-center'>
+          <span>{row.getValue('humidity')}%</span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'closed_by',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Closed by' />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className='flex items-center'>
+          <span>{row.getValue('closed_by')}</span>
+        </div>
+      )
     },
   },
   {

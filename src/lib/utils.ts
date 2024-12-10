@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { djangoRequest } from './django-service'
 import { RecordData } from '@/pages/dashboard/responses/statistics'
 import { DateRange } from 'react-day-picker'
+import { Incident } from './types/incident'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -78,5 +79,13 @@ export async function getRangeRecords({
     },
   })
   data && data.reverse()
+  return data
+}
+
+export async function getIncident() {
+  const { data } = await djangoRequest<Incident[]>({
+    endpoint: '/auth/incidents',
+    method: 'GET',
+  })
   return data
 }

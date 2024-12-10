@@ -64,7 +64,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
         setUser(data.user)
         setIsAuthenticated(true)
-        navigate('/tasks')
+        navigate('/')
       }
     },
     onError: (error) => {

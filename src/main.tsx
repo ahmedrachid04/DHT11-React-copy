@@ -13,6 +13,7 @@ import Tasks from './pages/tasks'
 import SignIn2 from './pages/auth/sign-in-2'
 import { RequireAuth, RequireNoAuth } from './components/require-auth'
 import { AuthProvider } from './hooks/auth-provider'
+import Chats from './pages/chats/index.tsx'
 
 const queryClient = new QueryClient()
 
@@ -32,7 +33,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     </RequireNoAuth>
                   }
                 />
-
                 <Route
                   path='/'
                   element={
@@ -43,6 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 >
                   <Route index element={<Dashboard />} />
                   <Route path='tasks' element={<Tasks />} />
+                  <Route path='incident/:id' element={<Chats />} />
                 </Route>
               </Routes>
             </BrowserRouter>

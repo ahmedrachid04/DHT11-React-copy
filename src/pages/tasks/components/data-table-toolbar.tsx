@@ -5,15 +5,14 @@ import { Button } from '@/components/custom/button.tsx'
 import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from '../components/data-table-view-options'
 
-import { priorities, statuses } from '../data/data'
-import { DataTableFacetedFilter } from './data-table-faceted-filter'
-
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  isFetching: boolean
 }
 
 export function DataTableToolbar<TData>({
   table,
+  isFetching,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -28,22 +27,7 @@ export function DataTableToolbar<TData>({
           }
           className='h-8 w-[150px] lg:w-[250px]'
         />
-        <div className='flex gap-x-2'>
-          {table.getColumn('status') && (
-            <DataTableFacetedFilter
-              column={table.getColumn('status')}
-              title='Status'
-              options={statuses}
-            />
-          )}
-          {table.getColumn('priority') && (
-            <DataTableFacetedFilter
-              column={table.getColumn('priority')}
-              title='Priority'
-              options={priorities}
-            />
-          )}
-        </div>
+        <div className='flex gap-x-2'></div>
         {isFiltered && (
           <Button
             variant='ghost'
@@ -53,6 +37,9 @@ export function DataTableToolbar<TData>({
             Reset
             <Cross2Icon className='ml-2 h-4 w-4' />
           </Button>
+        )}
+        {isFetching && (
+          <Button variant={'ghost'} loading size={'icon'}></Button>
         )}
       </div>
       <DataTableViewOptions table={table} />
