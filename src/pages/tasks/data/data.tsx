@@ -1,10 +1,4 @@
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  CheckCircledIcon,
-  StopwatchIcon,
-} from '@radix-ui/react-icons'
+import { CheckCircledIcon, StopwatchIcon } from '@radix-ui/react-icons'
 
 export const labels = [
   {
@@ -24,12 +18,12 @@ export const labels = [
 export const statuses = [
   {
     value: false,
-    label: 'Open',
+    label: 'Fermé',
     icon: StopwatchIcon,
   },
   {
     value: true,
-    label: 'Closed',
+    label: 'Ouvert',
     icon: CheckCircledIcon,
   },
 ]

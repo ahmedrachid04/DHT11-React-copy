@@ -41,7 +41,7 @@ export type ChartItem = { dt: string; temp: number; hum: number }
 
 const chartConfig = {
   visitors: {
-    label: 'Visitors',
+    label: 'Hum et temp',
   },
   temp: {
     label: 'Temperature',
@@ -73,8 +73,10 @@ export function FullOverview() {
     <Card className='col-span-1'>
       <CardHeader className='flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row'>
         <div className='grid flex-1 gap-1 text-center sm:text-left'>
-          <CardTitle>Area Chart - Interactive</CardTitle>
-          <CardDescription>Showing Temperature and Humidity</CardDescription>
+          <CardTitle>Graphique de zone - Interactif</CardTitle>
+          <CardDescription>
+            Affichage de la température et de l'humidité
+          </CardDescription>
         </div>
         <Popover>
           <PopoverTrigger asChild>
@@ -116,22 +118,22 @@ export function FullOverview() {
               'w-[160px] rounded-lg  sm:ml-auto',
               date?.from && date.to && 'text-gray-500'
             )}
-            aria-label='Select a value'
+            aria-label='Sélectionnez une valeur'
           >
-            <SelectValue placeholder='Last 3 months' />
+            <SelectValue placeholder='Derniers 3 mois' />
           </SelectTrigger>
           <SelectContent className='rounded-xl'>
             <SelectItem value={'90'} className='rounded-lg'>
-              Last 3 months
+              Derniers 3 mois
             </SelectItem>
             <SelectItem value={'365'} className='rounded-lg'>
-              Last 12 months
+              Derniers 12 mois
             </SelectItem>
             <SelectItem value={'30'} className='rounded-lg'>
-              Last 30 days
+              Derniers 30 jours
             </SelectItem>
             <SelectItem value={'7'} className='rounded-lg'>
-              Last 7 days
+              Derniers 7 jours
             </SelectItem>
           </SelectContent>
         </Select>
@@ -147,7 +149,7 @@ export function FullOverview() {
         )}
         <ChartContainer
           config={chartConfig}
-          className=' aspect-auto h-[250px] w-full'
+          className='aspect-auto h-[250px] w-full'
         >
           <AreaChart data={(date ? chartRangeData : chartData) ?? []}>
             <defs>

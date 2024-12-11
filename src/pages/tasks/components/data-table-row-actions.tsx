@@ -58,32 +58,32 @@ export function DataTableRowActions<TData>({
             className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
           >
             <DotsHorizontalIcon className='h-4 w-4' />
-            <span className='sr-only'>Open menu</span>
+            <span className='sr-only'>Ouvrir le menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
           <DropdownMenuItem>
-            <Link to={`/incident/${row.getValue('id')}`}>View Details</Link>
+            <Link to={`/incident/${row.getValue('id')}`}>Voir les détails</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onClick={() => setDeleteModalOpen(true)}>
-              Delete
+              Supprimer
             </DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Do You want to delete this incident? This action cannot be undone.
+            Voulez-vous supprimer cet incident ? Cette action est irréversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setDeleteModalOpen(false)}>
-            Cancel
+            Annuler
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
@@ -91,7 +91,7 @@ export function DataTableRowActions<TData>({
               variant={'destructive'}
               loading={isPending}
             >
-              Delete
+              Supprimer
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

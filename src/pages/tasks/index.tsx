@@ -24,9 +24,11 @@ export default function Tasks() {
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>Welcome back!</h2>
+            <h2 className='text-2xl font-bold tracking-tight'>
+              Bienvenue de retour !
+            </h2>
             <p className='text-muted-foreground'>
-              Here&apos;s the incident list
+              Voici la liste des incidents
             </p>
           </div>
         </div>
@@ -36,7 +38,8 @@ export default function Tasks() {
             data={(data ?? []).map((i) => {
               return { ...i, closed_by: i.closed_by?.username ?? null }
             })}
-            //@ts-ignore
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
             columns={columns}
           />
         </div>

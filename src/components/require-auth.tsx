@@ -9,8 +9,9 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   if (isLoading) {
     return (
       <div className='absolute flex h-screen w-screen flex-col items-center justify-center'>
-        <Button variant={'ghost'} size={'icon'} loading />
-        <p>Loading...</p>
+        <Button variant={'ghost'} size={'lg'} loading />
+        {/* Loading text in french */}
+        <p>Chargement</p>
       </div>
     )
   }
@@ -27,8 +28,9 @@ export function RequireNoAuth({ children }: { children: ReactNode }) {
   if (isLoading) {
     return (
       <div className='absolute flex h-screen w-screen flex-col items-center justify-center'>
-        <Button variant={'ghost'} size={'icon'} loading />
-        <p>Loading</p>
+        <Button variant={'ghost'} size={'lg'} loading />
+        {/* Loading text in french */}
+        <p>Chargement</p>
       </div>
     )
   }

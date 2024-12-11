@@ -75,12 +75,12 @@ export default function Sidebar({
                 strokeLinejoin='round'
                 strokeWidth='16'
               ></line>
-              <span className='sr-only'>Website Name</span>
+              <span className='sr-only'>Nom du site Web</span>
             </svg>
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
-              <span className='font-medium'>Oujda weather</span>
+              <span className='font-medium'>Météo Oujda</span>
               <span className='text-xs'>React + Django</span>
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function Sidebar({
             variant='ghost'
             size='icon'
             className='md:hidden'
-            aria-label='Toggle Navigation'
+            aria-label='Basculer la navigation'
             aria-controls='sidebar-menu'
             aria-expanded={navOpened}
             onClick={() => setNavOpened((prev) => !prev)}

@@ -11,3 +11,12 @@ export type Incident = {
   resolved: boolean
   updated_at: string
 }
+
+export type IncidentNote = {
+  id: number
+  note: string
+  created_at: string
+  updated_at: string
+  user_id: UserInfo
+  incident: number
+}

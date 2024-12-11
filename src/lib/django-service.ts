@@ -9,6 +9,7 @@ export async function djangoRequest<RES, REQ = undefined>({
   body,
   headers,
   signal,
+  isDataPure,
 }: {
   endpoint: string
   method: HttpMethod
@@ -16,6 +17,7 @@ export async function djangoRequest<RES, REQ = undefined>({
   body?: REQ extends undefined ? never : REQ // Make body required when B is declared
   headers?: { [key: string]: string }
   signal?: AbortSignal // Add signal parameter for AbortController
+  isDataPure?: boolean
 }): Promise<{
   data: RES | null
   error: string | null
@@ -74,7 +76,13 @@ export async function djangoRequest<RES, REQ = undefined>({
       if (method == 'DELETE') {
         return { data: null, error: null, status: res.status }
       }
-      const { data }: { data: RES | null } = await res.json()
+      let data: RES | null = null
+      if (isDataPure) {
+        data = await res.json()
+      } else {
+        const result: { data: RES | null } = await res.json()
+        data = result.data
+      }
       return { data, error: null, status: res.status }
     }
   } catch (error) {

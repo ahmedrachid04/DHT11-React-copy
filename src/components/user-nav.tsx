@@ -3,10 +3,8 @@ import { Button } from '@/components/custom/button.tsx'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu.tsx'
 import { useTranslations } from 'use-intl'
@@ -33,14 +31,7 @@ export function UserNav() {
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>{t('profile')}</DropdownMenuItem>
-          <DropdownMenuItem>{t('billing')}</DropdownMenuItem>
-          <DropdownMenuItem>{t('settings')}</DropdownMenuItem>
-          <DropdownMenuItem>{t('new_team')}</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+
         <DropdownMenuItem onClick={logout}>{t('log_out')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 import ReactDOM from 'react-dom/client'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -42,12 +42,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                   }
                 >
                   <Route index element={<Dashboard />} />
-                  <Route path='tasks' element={<Tasks />} />
+                  <Route path='incidents' element={<Tasks />} />
                   <Route path='incident/:id' element={<Chats />} />
                 </Route>
               </Routes>
             </BrowserRouter>
-            <ReactQueryDevtools initialIsOpen={false} />
           </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>

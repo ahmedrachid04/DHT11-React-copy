@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { useTranslations } from 'use-intl'
 import { FullOverview } from './components/full-overview.tsx'
 import { SummaryStatistics } from './responses/statistics.ts'
 import ScatterPlot from './components/scatter-plot.tsx'
@@ -14,18 +13,38 @@ import StatisticCard from './components/StatisticCard.tsx'
 import { UserNav } from '@/components/user-nav.tsx'
 import { djangoRequest } from '@/lib/django-service.ts'
 
-const CurrentIcon = (
+const TempIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
+    width='24'
+    height='24'
     viewBox='0 0 24 24'
     fill='none'
     stroke='currentColor'
+    strokeWidth='2'
     strokeLinecap='round'
     strokeLinejoin='round'
-    strokeWidth='2'
-    className='h-4 w-4 text-muted-foreground'
+    className='lucide lucide-thermometer h-4 w-4 text-muted-foreground'
   >
-    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
+    <path d='M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z' />
+  </svg>
+)
+
+//create a var icon for humidty
+const HumidityIcon = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='24'
+    height='24'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    className='lucide lucide-droplet h-4 w-4 text-muted-foreground'
+  >
+    <path d='M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z' />
   </svg>
 )
 
@@ -43,7 +62,7 @@ export default function Dashboard() {
     queryFn: getStatistics,
     staleTime: 30 * 1000,
   })
-  const t = useTranslations('dashboard')
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -56,9 +75,7 @@ export default function Dashboard() {
       {/* ===== Main ===== */}
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {t('dashboard')}
-          </h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Tableau de bord</h1>
           <div className='flex items-center space-x-2'>
             <Button
               variant={'ghost'}
@@ -87,48 +104,48 @@ export default function Dashboard() {
         </div>
         <Tabs
           orientation='vertical'
-          defaultValue='overview'
+          defaultValue='vue d’ensemble'
           className='space-y-4'
         >
-          <TabsContent value='overview' className='space-y-4'>
+          <TabsContent value='vue d’ensemble' className='space-y-4'>
             <Tabs
               orientation='vertical'
-              defaultValue='temp'
+              defaultValue='température'
               className='space-y-2'
             >
               <div className='flex w-full items-center justify-center'>
                 <TabsList className=''>
-                  <TabsTrigger value='temp'>Temperature</TabsTrigger>
-                  <TabsTrigger value='hum'>Humidity</TabsTrigger>
+                  <TabsTrigger value='température'>Température</TabsTrigger>
+                  <TabsTrigger value='humidité'>Humidité</TabsTrigger>
                 </TabsList>
               </div>
-              <TabsContent value='temp' className='space-y-4'>
+              <TabsContent value='température' className='space-y-4'>
                 <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
                   <StatisticCard
                     title='Maintenant'
-                    icon={CurrentIcon}
+                    icon={TempIcon}
                     value={data?.curr?.record?.temp + '°C'}
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Today Average temperature'
-                    icon={CurrentIcon}
+                    title='Température moyenne aujourd’hui'
+                    icon={TempIcon}
                     value={data?.avg?.daily.record.temp + '°C'}
                     trend={data?.avg?.daily?.humTemp}
                     trendSuffix="% d'hier"
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Weekly Average temperature'
-                    icon={CurrentIcon}
+                    title='Température moyenne hebdomadaire'
+                    icon={TempIcon}
                     value={data?.avg.weekly.record.temp + '°C'}
                     trend={data?.avg.weekly.humTemp}
-                    trendSuffix='% de la semaine dernier'
+                    trendSuffix='% de la semaine dernière'
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Max/Min temperature'
-                    icon={CurrentIcon}
+                    title='Température Max/Min'
+                    icon={TempIcon}
                     value={
                       data?.extremes?.highest?.temp +
                       '°C/' +
@@ -139,33 +156,33 @@ export default function Dashboard() {
                   />
                 </div>
               </TabsContent>
-              <TabsContent value='hum' className='space-y-4'>
+              <TabsContent value='humidité' className='space-y-4'>
                 <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
                   <StatisticCard
                     title='Maintenant'
-                    icon={CurrentIcon}
+                    icon={HumidityIcon}
                     value={data?.curr.record.hum + '%'}
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Today Average Humidity'
-                    icon={CurrentIcon}
+                    title='Humidité moyenne aujourd’hui'
+                    icon={HumidityIcon}
                     value={data?.avg.daily.record.hum + '%'}
                     trend={data?.avg.daily.humGrow}
-                    trendSuffix='% du jour dernier'
+                    trendSuffix='% d’hier'
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Weekly Average Humidity'
-                    icon={CurrentIcon}
+                    title='Humidité moyenne hebdomadaire'
+                    icon={HumidityIcon}
                     value={data?.avg.weekly.record.hum + '%'}
                     trend={data?.avg.weekly.humGrow}
-                    trendSuffix='% de la semaine dernier'
+                    trendSuffix='% de la semaine dernière'
                     isLoading={isFetching}
                   />
                   <StatisticCard
-                    title='Max/Min Humidity'
-                    icon={CurrentIcon}
+                    title='Humidité Max/Min'
+                    icon={HumidityIcon}
                     value={
                       data?.extremes?.highest?.hum +
                       '%/' +
