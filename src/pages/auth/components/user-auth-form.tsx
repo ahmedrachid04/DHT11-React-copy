@@ -122,7 +122,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isLoading} disabled={isSuccess}>
+            <Button className='mt-2' loading={isLoading}>
               Connexion
             </Button>
           </div>
