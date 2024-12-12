@@ -41,11 +41,7 @@ const formSchema = z.object({
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { setUser, setIsAuthenticated } = useAuth()
   const navigate = useNavigate()
-  const {
-    mutate,
-    isPending: isLoading,
-    isSuccess,
-  } = useMutation({
+  const { mutate, isPending: isLoading } = useMutation({
     mutationKey: ['login'],
     mutationFn: async ({ email, password }: LoginRequest) => {
       const { data } = await djangoRequest<LoginResponse, LoginRequest>({
