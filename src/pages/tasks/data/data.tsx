@@ -18,12 +18,12 @@ export const labels = [
 export const statuses = [
   {
     value: false,
-    label: 'Fermé',
+    label: 'Ouvert',
     icon: StopwatchIcon,
   },
   {
     value: true,
-    label: 'Ouvert',
+    label: 'Fermé',
     icon: CheckCircledIcon,
   },
 ]
