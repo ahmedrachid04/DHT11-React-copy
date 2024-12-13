@@ -187,7 +187,6 @@ export function FullOverview() {
               minTickGap={15}
               tickFormatter={(value) => {
                 const date = new Date(value)
-                console.log(date)
                 return date.toLocaleDateString('fr-FR', {
                   month: 'short',
                   day: 'numeric',

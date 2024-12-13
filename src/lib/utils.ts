@@ -89,3 +89,5 @@ export async function getIncident() {
   })
   return data
 }
+
+export const APP_VERSION: string = '0.0.1'

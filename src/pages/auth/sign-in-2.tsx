@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { UserAuthForm } from './components/user-auth-form'
+import { APP_VERSION } from '@/lib/utils'
 
 export default function SignIn2() {
   return (
@@ -20,7 +21,7 @@ export default function SignIn2() {
           </svg>
           <h1 className='text-xl font-medium'>
             {/* Oujda Dashboard in french */}
-            Météo Oujda
+            Météo Oujda <span className='text-xs'>{APP_VERSION}</span>
           </h1>
         </div>
         <Card className='p-6'>

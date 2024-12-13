@@ -64,7 +64,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       }
     },
     onError: (error) => {
-      console.log('error in the form', error.message)
       form.setError('password', { message: error.message })
     },
   })

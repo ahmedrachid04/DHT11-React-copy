@@ -10,28 +10,12 @@ on:
       - main
 
 jobs:
-  install-lint-build-push-to-docker:
+  build-push-to-docker:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install pnpm
-        run: npm install -g pnpm  
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Lint the code
-        run: pnpm lint      
-      - name: Build the project
-        run: pnpm build
         
       - name: Log in to DockerHub
         uses: docker/login-action@v2

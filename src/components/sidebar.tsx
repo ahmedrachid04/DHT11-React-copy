@@ -3,7 +3,7 @@ import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
 import { Layout } from './custom/layout.tsx'
 import { Button } from './custom/button.tsx'
 import Nav from './nav.tsx'
-import { cn } from '@/lib/utils.ts'
+import { APP_VERSION, cn } from '@/lib/utils.ts'
 import { sidelinks } from '@/data/sidelinks.tsx'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
@@ -80,7 +80,9 @@ export default function Sidebar({
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
-              <span className='font-medium'>Météo Oujda</span>
+              <span className='font-medium'>
+                Météo Oujda <span className='text-xs'>{APP_VERSION}</span>
+              </span>
               <span className='text-xs'>React + Django</span>
             </div>
           </div>

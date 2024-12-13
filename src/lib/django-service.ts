@@ -56,13 +56,10 @@ export async function djangoRequest<RES, REQ = undefined>({
     }
 
     if (res.status < 200) {
-      console.log('response is not ok')
       const {
         error,
         detail,
       }: { error?: string | null; detail?: string | null } = await res.json()
-      console.log('error:', error)
-      console.log('detail:', detail)
 
       if (detail) {
         throw new Error(detail)
@@ -72,7 +69,6 @@ export async function djangoRequest<RES, REQ = undefined>({
         throw new Error('Request failed')
       }
     } else {
-      console.log(`response of type ${method} is ok`)
       if (method == 'DELETE') {
         return { data: null, error: null, status: res.status }
       }
