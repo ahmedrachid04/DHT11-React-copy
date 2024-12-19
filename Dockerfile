@@ -4,6 +4,7 @@ RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY . .
+ENV VITE_BACKEND_URL=https://dht-backend.safouan.me
 RUN pnpm run build
 
 FROM nginx:1.25.4-alpine3.18
