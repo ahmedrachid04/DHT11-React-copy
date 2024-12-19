@@ -1,9 +1,7 @@
 import { Layout } from '@/components/custom/layout.tsx'
 import { Button } from '@/components/custom/button.tsx'
 import { useQuery } from '@tanstack/react-query'
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
 import { FullOverview } from './components/full-overview.tsx'
 import { SummaryStatistics } from './responses/statistics.ts'
 import ScatterPlot from './components/scatter-plot.tsx'
@@ -155,6 +153,9 @@ export default function Dashboard() {
                     isLoading={isFetching}
                   />
                 </div>
+                <div className='grid grid-cols-1 '>
+                  <FullOverview type='temp' />
+                </div>
               </TabsContent>
               <TabsContent value='humidité' className='space-y-4'>
                 <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -192,11 +193,12 @@ export default function Dashboard() {
                     isLoading={isFetching}
                   />
                 </div>
+                <div className='grid grid-cols-1 '>
+                  <FullOverview type='hum' />
+                </div>
               </TabsContent>
             </Tabs>
-            <div className='grid grid-cols-1 '>
-              <FullOverview />
-            </div>
+
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
               <ScatterPlot />
 

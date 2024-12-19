@@ -3,3 +3,14 @@ dist
 LICENSE
 .vscode
 .github
+Dockerfile
+.dockerignore
+.git
+.github
+.gitignore
+# Build output
+dist
+build
+*.log
+tasks.todo
+

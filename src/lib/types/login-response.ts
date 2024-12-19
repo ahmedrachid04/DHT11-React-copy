@@ -5,6 +5,7 @@ export type UserInfo = {
   is_active: boolean
   created: string
   updated: string
+  is_staff: boolean
 }
 
 export type LoginResponse = {

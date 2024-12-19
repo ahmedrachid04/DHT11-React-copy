@@ -1,6 +1,6 @@
 export type RecordData = {
-  temp: number | null
-  hum: number | null
+  temp?: number | null
+  hum?: number | null
   dt: string | null
 }
 

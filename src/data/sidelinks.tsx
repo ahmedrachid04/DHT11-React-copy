@@ -1,4 +1,5 @@
 import { IconChecklist, IconLayoutDashboard } from '@tabler/icons-react'
+import { SettingsIcon } from 'lucide-react'
 
 export interface NavLink {
   title: string
@@ -23,5 +24,14 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/incidents',
     icon: <IconChecklist size={18} />,
+  },
+]
+
+export const adminSideLinks: SideLink[] = [
+  {
+    title: 'Paramètres',
+    label: '',
+    href: '/settings',
+    icon: <SettingsIcon size={18} />,
   },
 ]

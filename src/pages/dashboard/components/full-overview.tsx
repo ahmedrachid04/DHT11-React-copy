@@ -36,8 +36,9 @@ import { DateRange } from 'react-day-picker'
 import { useFormatter } from 'use-intl'
 import { cn, getRangeRecords } from '@/lib/utils'
 import { getLatestNRecords } from './getLatestNRecords'
+import CSVButton from './csv-button'
 
-export type ChartItem = { dt: string; temp: number; hum: number }
+export type ChartItem = { dt?: string; temp?: number; hum: number }
 
 const chartConfig = {
   visitors: {
@@ -53,21 +54,26 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function FullOverview() {
+interface Props {
+  type: 'hum' | 'temp'
+}
+
+export function FullOverview(props: Props) {
   const [timeRange, setTimeRange] = React.useState(90)
   const [date, setDate] = React.useState<DateRange | undefined>(undefined)
   const { data: chartData, isLoading } = useQuery({
     queryKey: ['latestNRecords', timeRange],
     queryFn: getLatestNRecords,
-    enabled: !date,
+    enabled: !(date?.from && date?.to),
     staleTime: 1000 * 60 * 60,
   })
   const { data: chartRangeData, isLoading: isRangeLoading } = useQuery({
     queryKey: ['rangeRecords', date],
     queryFn: getRangeRecords,
-    enabled: !!date,
+    enabled: !!(date?.from && date?.to),
     staleTime: 1000 * 60 * 60,
   })
+
   const formatter = useFormatter()
   return (
     <Card className='col-span-1'>
@@ -78,9 +84,17 @@ export function FullOverview() {
             Affichage de la température et de l'humidité
           </CardDescription>
         </div>
+        <CSVButton
+          disabled={isLoading || isRangeLoading}
+          data={chartData ? chartData : chartRangeData}
+        />
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant='outline' className='flex items-center gap-x-2'>
+            <Button
+              disabled={isRangeLoading || isLoading}
+              variant='outline'
+              className='flex items-center gap-x-2'
+            >
               <CalendarIcon
                 size={16}
                 className={!date?.from && !date?.to ? 'text-gray-500' : ''}
@@ -101,12 +115,17 @@ export function FullOverview() {
               selected={date}
               onSelect={setDate}
               disabled={(date) =>
-                date > new Date() || date < new Date('1900-01-01')
+                date > new Date() ||
+                date < new Date('1900-01-01') ||
+                isRangeLoading ||
+                isLoading
               }
             />
           </PopoverContent>
         </Popover>
+
         <Select
+          disabled={isRangeLoading || isLoading}
           value={`${timeRange}`}
           onValueChange={(v) => {
             setDate(undefined)
@@ -151,7 +170,29 @@ export function FullOverview() {
           config={chartConfig}
           className='aspect-auto h-[250px] w-full'
         >
-          <AreaChart data={(date ? chartRangeData : chartData) ?? []}>
+          <AreaChart
+            data={
+              (date
+                ? chartRangeData?.map((c) => {
+                    const temporary = { ...c }
+                    if (props.type === 'hum' && temporary?.hum) {
+                      delete temporary.temp
+                    } else if (props.type === 'temp' && temporary?.temp) {
+                      delete temporary.hum
+                    }
+                    return temporary
+                  })
+                : chartData?.map((c) => {
+                    const temporary = { ...c }
+                    if (props.type === 'hum' && temporary?.hum) {
+                      delete temporary.temp
+                    } else if (props.type === 'temp' && temporary?.temp) {
+                      delete temporary.hum
+                    }
+                    return temporary
+                  })) ?? []
+            }
+          >
             <defs>
               <linearGradient id='fillTemp' x1='0' y1='0' x2='0' y2='1'>
                 <stop

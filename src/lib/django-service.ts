@@ -55,7 +55,7 @@ export async function djangoRequest<RES, REQ = undefined>({
       throw new Error('Request aborted')
     }
 
-    if (res.status < 200) {
+    if (res.status < 200 || res.status >= 400) {
       const {
         error,
         detail,

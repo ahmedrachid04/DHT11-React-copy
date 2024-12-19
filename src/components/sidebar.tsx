@@ -4,7 +4,8 @@ import { Layout } from './custom/layout.tsx'
 import { Button } from './custom/button.tsx'
 import Nav from './nav.tsx'
 import { APP_VERSION, cn } from '@/lib/utils.ts'
-import { sidelinks } from '@/data/sidelinks.tsx'
+import { adminSideLinks, sidelinks } from '@/data/sidelinks.tsx'
+import { useAuth } from '@/hooks/use-auth.tsx'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -17,7 +18,7 @@ export default function Sidebar({
   setIsCollapsed,
 }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
-
+  const { user } = useAuth()
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
     if (navOpened) {
@@ -107,7 +108,7 @@ export default function Sidebar({
           className={`z-40 h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
-          links={sidelinks}
+          links={user?.is_staff ? [...sidelinks, ...adminSideLinks] : sidelinks}
         />
 
         {/* Scrollbar width toggle button */}

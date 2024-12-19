@@ -17,8 +17,8 @@ export function UserNav() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
-          <Avatar className='h-8 w-8'>
-            <AvatarFallback>{user?.username.slice(0, 3)}</AvatarFallback>
+          <Avatar className='h-12 w-12'>
+            <AvatarFallback>{user?.username.slice(0, 5)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

@@ -201,7 +201,6 @@ export default function Chats() {
       },
       onSuccess: () => {
         queryClient.refetchQueries({ queryKey: ['get-incidents'] })
-        refreshPage()
       },
       onSettled: () => {
         setCloseIncidenceModalOpen(false)

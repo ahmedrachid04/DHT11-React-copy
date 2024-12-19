@@ -36,6 +36,23 @@ services:
     environment:
       - ALLOWED_ORIGINS=https://dht.safouan.me
       - CSRF_TRUSTED_ORIGINS=https://dht-backend.safouan.me
+        POSTGRES_USER=
+      - POSTGRES_HOST=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DATABASE=
+      - POSTGRES_ENDPOINT_ID=
+      - POSTGRES_PORT=
+      - TELEGRAM_BOT_AUTH_TOKEN=
+      - TELEGRAM_CHAT_ID=
+      - ALLOWED_ORIGINS=
+      - SMTP_HOST=
+      - SMTP_PORT=
+      - SENDER_EMAIL=
+      - SMTP_PASSWORD=
+      - ALLOWED_HOSTS=
+      - TWILLIO_AUTH_TOKEN=
+      - TWILLIO_SID=
+
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`dht-backend.safouan.me`)"
