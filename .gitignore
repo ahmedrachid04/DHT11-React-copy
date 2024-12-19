@@ -8,12 +8,13 @@ pnpm-debug.log*
 lerna-debug.log*
 
 .github
-
-.env.dev
 node_modules
 dist
 dist-ssr
 *.local
+
+.env
+.env.dev
 
 # Editor directories and files
 .vscode/*
