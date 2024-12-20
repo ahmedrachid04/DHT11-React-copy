@@ -4,6 +4,7 @@ import emailPNG from '@/assets/logo/email.png'
 import telegramPNG from '@/assets/logo/telegram.png'
 import whatsappPNG from '@/assets/logo/whatsapp.png'
 import ManageDataDialog from '@/components/manage-data-dialog'
+import ManageBackendParametersDialog from '@/components/manage-backend-parameters-dialog'
 
 export const apps = [
   {
@@ -47,7 +48,7 @@ export const apps = [
   //   logo: <UserIcon />,
   //   desc: 'Gérez les utilisateurs pour toutes les notifications.',
   // },
-  
+
   {
     name: 'Emails',
     logo: <img src={emailPNG} height={24} width={24} />,
@@ -88,5 +89,6 @@ export const apps = [
     name: 'Paramètres du Backend',
     logo: <Code2Icon />,
     desc: 'Gérez les paramètres pour les notifications backend.',
+    modal: <ManageBackendParametersDialog />,
   },
 ]

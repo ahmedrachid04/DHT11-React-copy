@@ -35,12 +35,14 @@ import { PasswordInput } from '@/components/password-input'
 
 const formSchema = z
   .object({
-    username: z.string().min(1, { message: 'Username is required.' }),
+    username: z
+      .string()
+      .min(1, { message: "Le nom d'utilisateur est requis." }),
 
     email: z
       .string()
-      .min(1, { message: 'Email is required.' })
-      .email({ message: 'Email is invalid.' }),
+      .min(1, { message: "L'email est requis." })
+      .email({ message: "L'email est invalide." }),
     password: z.string().transform((pwd) => pwd.trim()),
 
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
@@ -53,7 +55,7 @@ const formSchema = z
       if (password === '') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Password is required.',
+          message: 'Le mot de passe est requis.',
           path: ['password'],
         })
       }
@@ -61,7 +63,7 @@ const formSchema = z
       if (password.length < 8) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Password must be at least 8 characters long.',
+          message: 'Le mot de passe doit contenir au moins 8 caractères.',
           path: ['password'],
         })
       }
@@ -69,7 +71,8 @@ const formSchema = z
       if (!password.match(/[a-z]/)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Password must contain at least one lowercase letter.',
+          message:
+            'Le mot de passe doit contenir au moins une lettre minuscule.',
           path: ['password'],
         })
       }
@@ -77,7 +80,7 @@ const formSchema = z
       if (!password.match(/\d/)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Password must contain at least one number.',
+          message: 'Le mot de passe doit contenir au moins un chiffre.',
           path: ['password'],
         })
       }
@@ -85,7 +88,7 @@ const formSchema = z
       if (password !== confirmPassword) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Passwords don't match.",
+          message: 'Les mots de passe ne correspondent pas.',
           path: ['confirmPassword'],
         })
       }
@@ -179,10 +182,16 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? 'Edit User' : 'Add New User'}</DialogTitle>
+          <DialogTitle>
+            {isEdit
+              ? "Modifier l'utilisateur"
+              : 'Ajouter un nouvel utilisateur'}
+          </DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Update the user here. ' : 'Create new user here. '}
-            Click save when you&apos;re done.
+            {isEdit
+              ? "Mettez à jour l'utilisateur ici. "
+              : 'Créez un nouvel utilisateur ici. '}
+            Cliquez sur enregistrer lorsque vous avez terminé.
           </DialogDescription>
         </DialogHeader>
 
@@ -199,7 +208,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
               render={({ field }) => (
                 <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
                   <FormLabel className='col-span-2 text-right'>
-                    Username
+                    Nom d'utilisateur
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -237,11 +246,11 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
               name='role'
               render={({ field }) => (
                 <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                  <FormLabel className='col-span-2 text-right'>Role</FormLabel>
+                  <FormLabel className='col-span-2 text-right'>Rôle</FormLabel>
                   <SelectDropdown
                     defaultValue={field.value}
                     onValueChange={field.onChange}
-                    placeholder='Select a role'
+                    placeholder='Sélectionnez un rôle'
                     className='col-span-4'
                     items={userTypes.map(({ label, value }) => ({
                       label,
@@ -260,11 +269,11 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
                     <FormLabel className='col-span-2 text-right'>
-                      Password
+                      Mot de passe
                     </FormLabel>
                     <FormControl>
                       <PasswordInput
-                        placeholder='e.g., S3cur3P@ssw0rd'
+                        placeholder='ex., S3cur3P@ssw0rd'
                         className='col-span-4'
                         {...field}
                       />
@@ -282,12 +291,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
                     <FormLabel className='col-span-2 text-right'>
-                      Confirm Password
+                      Confirmer le mot de passe
                     </FormLabel>
                     <FormControl>
                       <PasswordInput
                         disabled={!isPasswordTouched}
-                        placeholder='e.g., S3cur3P@ssw0rd'
+                        placeholder='ex., S3cur3P@ssw0rd'
                         className='col-span-4'
                         {...field}
                       />
@@ -307,7 +316,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
             </p>
           )}
           <Button loading={isPending} type='submit' form='user-form'>
-            Save changes
+            Enregistrer les modifications
           </Button>
         </DialogFooter>
       </DialogContent>

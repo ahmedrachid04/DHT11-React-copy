@@ -39,7 +39,7 @@ export async function djangoRequest<RES, REQ = undefined>({
       body: JSON.stringify(body),
       //add Json application type if the method is post
       headers:
-        method === 'POST' || method === 'PATCH'
+        method === 'POST' || method === 'PATCH' || method === 'PUT'
           ? {
               'Content-Type': 'application/json',
               ...headersList,

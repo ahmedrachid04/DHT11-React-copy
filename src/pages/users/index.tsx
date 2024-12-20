@@ -43,14 +43,16 @@ export default function Users() {
         <Layout.Body>
           <div className='mb-2 flex flex-wrap items-center justify-between space-y-2'>
             <div>
-              <h2 className='text-2xl font-bold tracking-tight'>User List</h2>
+              <h2 className='text-2xl font-bold tracking-tight'>
+                Liste des utilisateurs
+              </h2>
               <p className='text-muted-foreground'>
-                Manage your users and their roles here.
+                Gérez vos utilisateurs et leurs rôles ici.
               </p>
             </div>
             <div className='flex gap-2'>
               <Button className='space-x-1' onClick={() => setOpen('add')}>
-                <span>Add User</span> <IconUserPlus size={18} />
+                <span>Ajouter un utilisateur</span> <IconUserPlus size={18} />
               </Button>
             </div>
           </div>

@@ -25,7 +25,6 @@ export const sidelinks: SideLink[] = [
     href: '/incidents',
     icon: <IconChecklist size={18} />,
   },
-  
 ]
 
 export const adminSideLinks: SideLink[] = [
@@ -36,7 +35,7 @@ export const adminSideLinks: SideLink[] = [
     icon: <SettingsIcon size={18} />,
   },
   {
-    title: 'users',
+    title: 'Utilisateurs',
     label: '',
     href: '/users',
     icon: <Users size={18} />,

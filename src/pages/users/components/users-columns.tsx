@@ -9,7 +9,7 @@ import { DataTableColumnHeader } from './data-table-column-header.tsx'
 import { DataTableRowActions } from './data-table-row-actions.tsx'
 import { UserInfo } from '@/lib/types/login-response.ts'
 
-export const columns: ColumnDef<UserInfo>[] = [  
+export const columns: ColumnDef<UserInfo>[] = [
   {
     accessorKey: 'username',
     header: ({ column }) => (
@@ -18,9 +18,9 @@ export const columns: ColumnDef<UserInfo>[] = [
     cell: ({ row }) => (
       <LongText className='max-w-36'>{row.getValue('username')}</LongText>
     ),
-    
+
     enableHiding: false,
-  },  
+  },
   {
     accessorKey: 'email',
     header: ({ column }) => (
@@ -28,15 +28,14 @@ export const columns: ColumnDef<UserInfo>[] = [
     ),
     cell: ({ row }) => (
       <div className=''>
-        <p>{row.getValue('email')}
-        </p>
-        </div>
+        <p>{row.getValue('email')}</p>
+      </div>
     ),
-  },  
+  },
   {
     accessorKey: 'is_active',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
+      <DataTableColumnHeader column={column} title='Statut' />
     ),
     cell: ({ row }) => {
       const { is_active } = row.original
@@ -44,7 +43,7 @@ export const columns: ColumnDef<UserInfo>[] = [
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn('capitalize', badgeColor)}>
-            {row.getValue('is_active') ? "Active" : "Desactive"}
+            {row.getValue('is_active') ? 'Actif' : 'Inactif'}
           </Badge>
         </div>
       )
@@ -56,7 +55,7 @@ export const columns: ColumnDef<UserInfo>[] = [
   {
     accessorKey: 'is_staff',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Role' />
+      <DataTableColumnHeader column={column} title='Rôle' />
     ),
     cell: ({ row }) => {
       const { is_staff } = row.original
@@ -67,11 +66,11 @@ export const columns: ColumnDef<UserInfo>[] = [
       }
 
       return (
-        <div className='flex gap-x-2 items-center'>
+        <div className='flex items-center gap-x-2'>
           {userType.icon && (
             <userType.icon size={16} className='text-muted-foreground' />
           )}
-          <span className='capitalize text-sm'>{userType.label}</span>
+          <span className='text-sm capitalize'>{userType.label}</span>
         </div>
       )
     },
