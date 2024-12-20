@@ -1,4 +1,4 @@
-import { Code2Icon, UserIcon } from 'lucide-react'
+import { Code2Icon } from 'lucide-react'
 import twilioPNG from '@/assets/logo/twilio.png'
 import emailPNG from '@/assets/logo/email.png'
 import telegramPNG from '@/assets/logo/telegram.png'
@@ -42,16 +42,12 @@ export const apps = [
       />
     ),
   },
-  {
-    name: 'Utilisateurs',
-    logo: <UserIcon />,
-    desc: 'Gérez les utilisateurs pour toutes les notifications.',
-  },
-  {
-    name: 'Paramètres du Backend',
-    logo: <Code2Icon />,
-    desc: 'Gérez les paramètres pour les notifications backend.',
-  },
+  // {
+  //   name: 'Utilisateurs',
+  //   logo: <UserIcon />,
+  //   desc: 'Gérez les utilisateurs pour toutes les notifications.',
+  // },
+  
   {
     name: 'Emails',
     logo: <img src={emailPNG} height={24} width={24} />,
@@ -87,5 +83,10 @@ export const apps = [
         type='WHATSAPP'
       />
     ),
+  },
+  {
+    name: 'Paramètres du Backend',
+    logo: <Code2Icon />,
+    desc: 'Gérez les paramètres pour les notifications backend.',
   },
 ]

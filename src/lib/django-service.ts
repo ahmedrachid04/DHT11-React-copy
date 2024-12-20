@@ -1,4 +1,4 @@
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 import Cookies from 'js-cookie'
 import { apiUrl } from './utils'
 
@@ -39,7 +39,7 @@ export async function djangoRequest<RES, REQ = undefined>({
       body: JSON.stringify(body),
       //add Json application type if the method is post
       headers:
-        method === 'POST'
+        method === 'POST' || method === 'PATCH'
           ? {
               'Content-Type': 'application/json',
               ...headersList,

@@ -1,9 +1,16 @@
 services:
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   reverse-proxy:
     image: "traefik:v3.2.1"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
+    command:      
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
@@ -20,23 +27,20 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   frontend:
-    image: frontend
+    image: anubus298/dht-frontend:latest
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`dht.safouan.me`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.tls.certresolver=myresolver"
-    environment:
-      - PREFIX_BACKEND_URL=https://dht-backend.safouan.me
+      - "com.centurylinklabs.watchtower.enable=true"    
     depends_on:
       - backend
-
+    restart: always
   backend:
-    image: dht
+    image: anubus298/dht-backend:latest
     environment:
-      - ALLOWED_ORIGINS=https://dht.safouan.me
-      - CSRF_TRUSTED_ORIGINS=https://dht-backend.safouan.me
-        POSTGRES_USER=
+      - POSTGRES_USER=
       - POSTGRES_HOST=
       - POSTGRES_PASSWORD=
       - POSTGRES_DATABASE=
@@ -52,12 +56,16 @@ services:
       - ALLOWED_HOSTS=
       - TWILLIO_AUTH_TOKEN=
       - TWILLIO_SID=
-
+    env_file:
+      - .env.production
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`dht-backend.safouan.me`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
-
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: always
+    
 volumes:
   letsencrypt:
+        

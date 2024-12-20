@@ -39,7 +39,7 @@ import { Incident, IncidentNote } from '@/lib/types/incident'
 import { djangoRequest } from '@/lib/django-service'
 import { useAuth } from '@/hooks/use-auth'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 type CreateIncidentNoteRequest = {
   note: string
@@ -67,7 +67,6 @@ export default function Chats() {
   )
   const [currentMessage, setCurrentMessage] = useState('')
   const navigate = useNavigate()
-  const location = useLocation()
 
   const {
     data: notesData,
@@ -80,6 +79,7 @@ export default function Chats() {
     staleTime: 1000 * 10,
   })
   const { user } = useAuth()
+
   const { mutate: sendMessage, isPending: isDataSending } = useMutation({
     mutationKey: ['send-message'],
     mutationFn: async ({
@@ -179,14 +179,14 @@ export default function Chats() {
       },
       onSuccess: () => {
         queryClient.refetchQueries({ queryKey: ['get-incidents'] })
-        refreshPage()
+        goBackToIncidentsTablePage()
       },
       onSettled: () => {
         setDeleteModalOpen(false)
       },
     })
-  const refreshPage = () => {
-    navigate(location.pathname, { replace: true })
+  const goBackToIncidentsTablePage = () => {
+    navigate('/incidents')
   }
   const { mutate: closeIncident, isPending: isClosingIncidentPending } =
     useMutation({
@@ -255,12 +255,12 @@ export default function Chats() {
                           <span
                             className={cn(
                               'col-start-2 row-span-2 line-clamp-1 font-medium ',
-                              incident?.closed_by
+                              incident.resolved
                                 ? 'text-red-700'
                                 : 'text-green-600'
                             )}
                           >
-                            {incident?.closed_by ? 'fermé' : 'ouvert'}
+                            {incident.resolved ? 'fermé' : 'ouvert'}
                           </span>
                         </div>
                       </div>
@@ -313,12 +313,12 @@ export default function Chats() {
                   variant='ghost'
                   className={cn(
                     'me-6 hidden size-8 rounded-full sm:inline-flex lg:size-10',
-                    selectedIncident?.closed_by
+                    selectedIncident?.resolved
                       ? 'text-red-700'
                       : 'text-green-600'
                   )}
                 >
-                  {!selectedIncident?.closed_by ? 'Ouvert' : 'Fermé'}
+                  {!selectedIncident?.resolved ? 'Ouvert' : 'Fermé'}
                 </Button>
                 <AlertDialog open={closeIncidenceModalOpen}>
                   <AlertDialogContent>
@@ -393,7 +393,7 @@ export default function Chats() {
                     <DropdownMenuItem onClick={() => setDeleteModalOpen(true)}>
                       Supprimer
                     </DropdownMenuItem>
-                    {!selectedIncident?.closed_by && (
+                    {!selectedIncident?.resolved && (
                       <DropdownMenuItem
                         onClick={() => setCloseIncidenceModalOpen(true)}
                       >
@@ -443,12 +443,12 @@ export default function Chats() {
                     {notesData &&
                       notesData.map((note) => (
                         <Fragment
-                          key={`${note.id}-${note.user_id.username}-${note.incident}`}
+                          key={`${note.id}-${note?.user_id?.username}-${note.incident}`}
                         >
                           <div
                             className={cn(
                               'chat-box max-w-72 break-words px-3 py-2 shadow-lg',
-                              user?.id === note.user_id.id
+                              user?.id === note?.user_id?.id
                                 ? 'self-end rounded-[16px_16px_0_16px] bg-primary/85 text-white'
                                 : 'self-start rounded-[16px_16px_16px_0] bg-secondary '
                             )}
@@ -457,12 +457,12 @@ export default function Chats() {
                             <span
                               className={cn(
                                 'mt-1 block text-xs font-light italic text-muted-foreground',
-                                user?.id === note.user_id.id &&
+                                user?.id === note?.user_id?.id &&
                                   'text-right text-neutral-300'
                               )}
                             >
-                              {!(user?.id === note.user_id.id) &&
-                                note.user_id.username}{' '}
+                              {!(user?.id === note?.user_id?.id) &&
+                                note?.user_id?.username}{' '}
                               {dayjs(note.created_at).format('h:mm a')}
                             </span>
                           </div>

@@ -220,13 +220,13 @@ export default function ManageDataDialog(props: Props) {
               {data?.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
-                    className='flex items-center justify-center text-center text-muted-foreground'
+                    colSpan={3}
+                    className='flex items-center w-full justify-center text-center text-muted-foreground'
                   >
                     {isLoading ? (
                       <Button variant={'ghost'} size={'icon'} loading></Button>
                     ) : (
-                      'No data found'
+                     <p>No data found</p>
                     )}
                   </TableCell>
                 </TableRow>

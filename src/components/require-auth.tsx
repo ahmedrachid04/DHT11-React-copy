@@ -37,3 +37,19 @@ export function RequireNoAuth({ children }: { children: ReactNode }) {
 
   return isAuthenticated === false ? children : <Navigate to='/' replace />
 }
+
+export function RequireAdmin({ children }: { children: ReactNode }) {
+  const { user, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className='absolute flex h-screen w-screen flex-col items-center justify-center'>
+        <Button variant={'ghost'} size={'lg'} loading />
+        {/* Loading text in french */}
+        <p>Chargement</p>
+      </div>
+    )
+  }
+
+  return user?.is_staff ? children : <Navigate to='/' replace />
+}

@@ -17,6 +17,6 @@ export type IncidentNote = {
   note: string
   created_at: string
   updated_at: string
-  user_id: UserInfo
+  user_id: UserInfo | null
   incident: number
 }

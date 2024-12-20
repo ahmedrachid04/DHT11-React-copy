@@ -4,6 +4,7 @@ import { djangoRequest } from './django-service'
 import { RecordData } from '@/pages/dashboard/responses/statistics'
 import { DateRange } from 'react-day-picker'
 import { Incident } from './types/incident'
+import { UserInfo } from './types/login-response'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -90,4 +91,12 @@ export async function getIncident() {
   return data
 }
 
-export const APP_VERSION: string = '0.0.2'
+export async function getUsers() {
+  const { data } = await djangoRequest<UserInfo[]>({
+    endpoint: '/auth/users',
+    method: 'GET',
+  })
+  return data
+}
+
+export const APP_VERSION: string = '0.0.3 beta'
