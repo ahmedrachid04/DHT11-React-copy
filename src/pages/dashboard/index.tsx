@@ -193,16 +193,16 @@ function timeDifference(current: Date, previous: Date) {
   const elapsed = current.getTime() - previous.getTime()
 
   if (elapsed < msPerMinute) {
-    return Math.round(elapsed / 1000) + ' secondes ago'
+    return 'Il y a ' + Math.round(elapsed / 1000) + ' secondes'
   } else if (elapsed < msPerHour) {
-    return Math.round(elapsed / msPerMinute) + ' minutes ago'
+    return 'Il y a ' + Math.round(elapsed / msPerMinute) + ' minutes'
   } else if (elapsed < msPerDay) {
-    return Math.round(elapsed / msPerHour) + ' heures ago'
+    return 'Il y a ' + Math.round(elapsed / msPerHour) + ' heures'
   } else if (elapsed < msPerMonth) {
-    return 'environ ' + Math.round(elapsed / msPerDay) + ' jours ago'
+    return 'environ ' + Math.round(elapsed / msPerDay) + ' jours'
   } else if (elapsed < msPerYear) {
-    return 'environ ' + Math.round(elapsed / msPerMonth) + ' mois ago'
+    return 'environ ' + Math.round(elapsed / msPerMonth) + ' mois'
   } else {
-    return 'environ ' + Math.round(elapsed / msPerYear) + ' ans ago'
+    return 'environ ' + Math.round(elapsed / msPerYear) + ' ans'
   }
 }
