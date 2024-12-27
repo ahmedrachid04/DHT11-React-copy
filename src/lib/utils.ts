@@ -99,4 +99,4 @@ export async function getUsers() {
   return data
 }
 
-export const APP_VERSION: string = '0.0.3 beta'
+export const APP_VERSION: string = '0.0.4 beta'
