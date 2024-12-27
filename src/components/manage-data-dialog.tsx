@@ -123,7 +123,7 @@ export default function ManageDataDialog(props: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>Manage</Button>
+        <Button variant='outline'>Gérer</Button>
       </DialogTrigger>
       <DialogContent className='max-w-3xl'>
         <DialogHeader>
@@ -221,12 +221,12 @@ export default function ManageDataDialog(props: Props) {
                 <TableRow>
                   <TableCell
                     colSpan={3}
-                    className='flex items-center w-full justify-center text-center text-muted-foreground'
+                    className='flex w-full items-center justify-center text-center text-muted-foreground'
                   >
                     {isLoading ? (
                       <Button variant={'ghost'} size={'icon'} loading></Button>
                     ) : (
-                     <p>No data found</p>
+                      <p>No data found</p>
                     )}
                   </TableCell>
                 </TableRow>

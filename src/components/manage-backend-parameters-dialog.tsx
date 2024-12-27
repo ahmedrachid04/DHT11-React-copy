@@ -71,7 +71,7 @@ export default function ManageBackendParametersDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>Manage</Button>
+        <Button variant='outline'>Gérer</Button>
       </DialogTrigger>
       <DialogContent className='max-w-3xl'>
         <DialogHeader>
