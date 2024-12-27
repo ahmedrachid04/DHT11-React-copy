@@ -27,7 +27,10 @@ export default function Dashboard() {
     queryFn: getStatistics,
     staleTime: 30 * 1000,
   })
-
+  const currentTime = new Date()
+  const currentRecordTime = data?.curr?.record?.dt
+    ? new Date(data.curr.record.dt)
+    : currentTime
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -91,6 +94,8 @@ export default function Dashboard() {
                     icon={TempIcon}
                     value={data?.curr?.record?.temp + '°C'}
                     isLoading={isFetching}
+                    trend={''}
+                    trendSuffix={timeDifference(currentTime, currentRecordTime)}
                   />
                   <StatisticCard
                     title='Température moyenne aujourd’hui'
@@ -176,4 +181,28 @@ export default function Dashboard() {
       </Layout.Body>
     </Layout>
   )
+}
+
+function timeDifference(current: Date, previous: Date) {
+  const msPerMinute = 60 * 1000
+  const msPerHour = msPerMinute * 60
+  const msPerDay = msPerHour * 24
+  const msPerMonth = msPerDay * 30
+  const msPerYear = msPerDay * 365
+
+  const elapsed = current.getTime() - previous.getTime()
+
+  if (elapsed < msPerMinute) {
+    return Math.round(elapsed / 1000) + ' secondes ago'
+  } else if (elapsed < msPerHour) {
+    return Math.round(elapsed / msPerMinute) + ' minutes ago'
+  } else if (elapsed < msPerDay) {
+    return Math.round(elapsed / msPerHour) + ' heures ago'
+  } else if (elapsed < msPerMonth) {
+    return 'environ ' + Math.round(elapsed / msPerDay) + ' jours ago'
+  } else if (elapsed < msPerYear) {
+    return 'environ ' + Math.round(elapsed / msPerMonth) + ' mois ago'
+  } else {
+    return 'environ ' + Math.round(elapsed / msPerYear) + ' ans ago'
+  }
 }

@@ -6,12 +6,21 @@ import Nav from './nav.tsx'
 import { APP_VERSION, cn } from '@/lib/utils.ts'
 import { adminSideLinks, sidelinks } from '@/data/sidelinks.tsx'
 import { useAuth } from '@/hooks/use-auth.tsx'
+import { djangoRequest } from '@/lib/django-service.ts'
+import { useQuery } from '@tanstack/react-query'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+async function getBackendVersion() {
+  const { data } = await djangoRequest<{ version: string }>({
+    endpoint: '/version',
+    method: 'GET',
+  })
+  return data
+}
 export default function Sidebar({
   className,
   isCollapsed,
@@ -19,6 +28,11 @@ export default function Sidebar({
 }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
   const { user } = useAuth()
+  const { data: version } = useQuery({
+    queryKey: ['backendVersion'],
+    queryFn: getBackendVersion,
+    staleTime: 60 * 1000 * 60 * 24,
+  })
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
     if (navOpened) {
@@ -84,7 +98,9 @@ export default function Sidebar({
               <span className='font-medium'>
                 Météo Oujda <span className='text-xs'>{APP_VERSION}</span>
               </span>
-              <span className='text-xs'>React + Django</span>
+              <span className='text-xs'>
+                React + Django {version?.version && `(${version?.version})`}{' '}
+              </span>
             </div>
           </div>
 

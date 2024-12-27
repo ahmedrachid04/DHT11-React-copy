@@ -162,7 +162,7 @@ export default function Chats() {
     if (data && data.length > 0 && !selectedIncident) {
       setSelectedIncident(data[0]) // Initialiser avec le premier élément s'il n'est pas déjà sélectionné
     }
-  }, [data])
+  }, [data, selectedIncident])
   const [mobileSelectedUser, setMobileSelectedIncident] =
     useState<Incident | null>(null)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
