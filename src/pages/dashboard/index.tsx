@@ -92,7 +92,7 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Maintenant'
                     icon={TempIcon}
-                    value={data?.curr?.record?.temp + '°C'}
+                    value={data?.curr?.record?.temp?.toFixed(2) + '°C'}
                     isLoading={isFetching}
                     trend={''}
                     trendSuffix={timeDifference(currentTime, currentRecordTime)}
@@ -100,7 +100,7 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Température moyenne aujourd’hui'
                     icon={TempIcon}
-                    value={data?.avg?.daily.record.temp + '°C'}
+                    value={data?.avg?.daily.record.temp.toFixed(2) + '°C'}
                     trend={data?.avg?.daily?.humTemp}
                     trendSuffix="% d'hier"
                     isLoading={isFetching}
@@ -108,7 +108,7 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Température moyenne hebdomadaire'
                     icon={TempIcon}
-                    value={data?.avg.weekly.record.temp + '°C'}
+                    value={data?.avg.weekly.record.temp.toFixed(2) + '°C'}
                     trend={data?.avg.weekly.humTemp}
                     trendSuffix='% de la semaine dernière'
                     isLoading={isFetching}
@@ -117,9 +117,9 @@ export default function Dashboard() {
                     title='Température Max/Min'
                     icon={TempIcon}
                     value={
-                      data?.extremes?.highest?.temp +
+                      data?.extremes?.highest?.temp?.toFixed(2) +
                       '°C/' +
-                      data?.extremes?.lowest?.temp +
+                      data?.extremes?.lowest?.temp?.toFixed(2) +
                       '°C'
                     }
                     isLoading={isFetching}
@@ -134,22 +134,22 @@ export default function Dashboard() {
                   <StatisticCard
                     title='Maintenant'
                     icon={HumidityIcon}
-                    value={data?.curr.record.hum + '%'}
+                    value={data?.curr.record.hum?.toFixed(2) + '%'}
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Humidité moyenne aujourd’hui'
                     icon={HumidityIcon}
-                    value={data?.avg.daily.record.hum + '%'}
-                    trend={data?.avg.daily.humGrow}
+                    value={data?.avg.daily.record.hum.toFixed(2) + '%'}
+                    trend={data?.avg.daily.humGrow?.toFixed(2)}
                     trendSuffix='% d’hier'
                     isLoading={isFetching}
                   />
                   <StatisticCard
                     title='Humidité moyenne hebdomadaire'
                     icon={HumidityIcon}
-                    value={data?.avg.weekly.record.hum + '%'}
-                    trend={data?.avg.weekly.humGrow}
+                    value={data?.avg.weekly.record.hum.toFixed(2) + '%'}
+                    trend={data?.avg.weekly.humGrow?.toFixed(2)}
                     trendSuffix='% de la semaine dernière'
                     isLoading={isFetching}
                   />
