@@ -27,18 +27,14 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   frontend:
-    image: anubus298/dht-frontend:latest
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`dht.safouan.me`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
-      - "com.centurylinklabs.watchtower.enable=true"    
+    image: ahmedrachid04/dht-frontend:latest
+    ports:
+    - "3000:80"
     depends_on:
       - backend
     restart: always
   backend:
-    image: anubus298/dht-backend:latest
+    image: ahmedrachid04/dht-backend:latest
     environment:
       - POSTGRES_USER=
       - POSTGRES_HOST=
@@ -58,12 +54,8 @@ services:
       - TWILLIO_SID=
     env_file:
       - .env.production
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`dht-backend.safouan.me`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls.certresolver=myresolver"
-      - "com.centurylinklabs.watchtower.enable=true"
+    ports:
+    - "5000:80"
     restart: always
     
 volumes:
